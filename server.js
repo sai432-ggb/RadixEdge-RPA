@@ -123,18 +123,14 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Start server (for local development)
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`
-    ╔═══════════════════════════════════════╗
-    ║   RadixEdge RPA v1.0.0 (Cloud Ready)  ║
-    ║   Server running on port ${PORT}          ║
-    ║   Environment: ${process.env.NODE_ENV || 'development'}    ║
-    ╚═══════════════════════════════════════╝
-    `);
-  });
-}
-
-// Export for Vercel serverless deployment (ES modules)
-export default app;
+// Start server (always listen for Render.com/traditional hosting)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`
+  ╔═══════════════════════════════════════╗
+  ║   RadixEdge RPA v1.0.0 (Cloud Ready)  ║
+  ║   Server running on port ${PORT}          ║
+  ║   Environment: ${process.env.NODE_ENV || 'development'}    ║
+  ║   Serving frontend from root folder   ║
+  ╚═══════════════════════════════════════╝
+  `);
+});
