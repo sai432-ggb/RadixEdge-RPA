@@ -627,14 +627,28 @@ if (profitCtx) {
 
 let otpSent = false;
 
+// Demo bypass: Use demo@radixedge.io with any OTP to login instantly
+const DEMO_EMAIL = "demo@radixedge.io";
+const DEMO_OTP = "000000";
+
 async function handleOTP() {
   const email = document.getElementById("userInput").value;
   const otpInput = document.getElementById("otpInput");
   const otpBtn = document.getElementById("otpBtn");
+  const isDemoEmail = email.toLowerCase() === DEMO_EMAIL;
 
   try {
     // SEND OTP
     if (otpBtn.innerText === "Send OTP") {
+      
+      // DEMO BYPASS: Skip API call for demo email
+      if (isDemoEmail) {
+        alert("🎯 DEMO MODE: OTP sent instantly to " + email);
+        otpInput.value = DEMO_OTP;
+        document.getElementById("otpSection").style.display = "block";
+        otpBtn.innerText = "Verify OTP";
+        return;
+      }
 
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
@@ -660,6 +674,21 @@ async function handleOTP() {
       // VERIFY OTP
       const otp = otpInput.value;
 
+      // DEMO BYPASS: Accept any OTP for demo email
+      if (isDemoEmail) {
+        alert("🎯 DEMO MODE: OTP Verified Successfully!");
+        const farmer = { 
+          name: "Demo User",
+          crop: "Tomato",
+          acres: "5",
+          email: email
+        };
+        localStorage.setItem("farmer", JSON.stringify(farmer));
+        goPage("pg-dash");
+        updateFarmerUI();
+        return;
+      }
+
       const res = await fetch("/api/auth/verify-otp", {
         method: "POST",
         headers: {
@@ -674,6 +703,15 @@ async function handleOTP() {
 
       if (data.success) {
         alert("Login Success 🎉");
+        const farmer = {
+          name: data.user.email.split("@")[0],
+          crop: "Tomato",
+          acres: "5",
+          email: data.user.email
+        };
+        localStorage.setItem("farmer", JSON.stringify(farmer));
+        goPage("pg-dash");
+        updateFarmerUI();
       } else {
         alert(data.message);
       }
