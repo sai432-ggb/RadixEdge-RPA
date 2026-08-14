@@ -1,9 +1,18 @@
 {
-  "version": 2,
-  "name": "radixedge-rpa",
-  "startCommand": "node server.js",
-  "outputDirectory": ".",
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "*",
+      "use": "@vercel/static"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/server.js"
+    }
+  ]
 }
