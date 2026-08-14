@@ -4,8 +4,56 @@
 // Project: RadixEdge RPA
 // Version: 1.0.0-cloud-ready
 // Cloud Deployment: AWS/Azure/GCP Compatible
+
+// Demo Mode State Management
+const DEMO_MODE_KEY = 'radixedge_demo_mode';
+const DEMO_USER_KEY = 'radixedge_demo_user';
+
+function isDemoMode() {
+  return localStorage.getItem(DEMO_MODE_KEY) === 'true';
+}
+
+function setDemoMode(enabled) {
+  if (enabled) {
+    localStorage.setItem(DEMO_MODE_KEY, 'true');
+    localStorage.setItem(DEMO_USER_KEY, JSON.stringify({ 
+      email: 'demo@radixedge.io',
+      name: 'Guest User',
+      crop: 'Tomato',
+      acres: '5',
+      loginTime: new Date().toISOString(),
+      isDemo: true
+    }));
+  } else {
+    localStorage.removeItem(DEMO_MODE_KEY);
+    localStorage.removeItem(DEMO_USER_KEY);
+  }
+}
+
+function startDemoMode() {
+  setDemoMode(true);
+  initializeDemoUser();
+  goPage('pg-dash');
+}
+
+function initializeDemoUser() {
+  const demoUser = JSON.parse(localStorage.getItem(DEMO_USER_KEY) || '{}');
+  farmer = { 
+    name: demoUser.name || 'Guest User',
+    crop: demoUser.crop || 'Tomato',
+    acres: demoUser.acres || '5',
+    email: demoUser.email || 'demo@radixedge.io',
+    isDemo: true
+  };
+}
+
 let farmer = { name: 'Raju Patil', crop: 'Tomato', acres: '5' };
 let voiceOpen = false, homeChartsBuilt = false, diseaseSimmed = false;
+
+// Initialize on page load
+if (isDemoMode()) {
+  initializeDemoUser();
+}
 
 function goPage(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -15,13 +63,22 @@ function goPage(id) {
 }
 
 function enterDashboard() {
-  const nEl = document.getElementById('inp-name');
-  const cEl = document.getElementById('inp-crop');
-  const aEl = document.getElementById('inp-acres');
-  farmer.name  = nEl ? nEl.value.trim() || 'Farmer' : 'Farmer';
-  farmer.crop  = cEl ? cEl.value : 'Tomato';
-  farmer.acres = aEl ? aEl.value.trim() || '5' : '5';
+  // Support both authenticated and demo mode
+  if (!isDemoMode()) {
+    const nEl = document.getElementById('inp-name');
+    const cEl = document.getElementById('inp-crop');
+    const aEl = document.getElementById('inp-acres');
+    farmer.name  = nEl ? nEl.value.trim() || 'Farmer' : 'Farmer';
+    farmer.crop  = cEl ? cEl.value : 'Tomato';
+    farmer.acres = aEl ? aEl.value.trim() || '5' : '5';
+  }
   goPage('pg-dash');
+}
+
+function exitDemoMode() {
+  setDemoMode(false);
+  farmer = { name: 'Raju Patil', crop: 'Tomato', acres: '5' };
+  goPage('pg-landing');
 }
 
 function updateFarmerUI() {
@@ -31,6 +88,17 @@ function updateFarmerUI() {
   Object.keys(els).forEach(id => { const el = document.getElementById(id); if (el) el.textContent = els[id]; });
   const sbCrop = document.getElementById('sb-crop');
   if (sbCrop) sbCrop.textContent = farmer.crop + ' · ' + farmer.acres + ' acres';
+  
+  // Show demo mode indicator if in demo mode
+  const demoBadge = document.getElementById('demo-badge');
+  const logoutBtn = document.getElementById('logout-btn');
+  if (isDemoMode()) {
+    if (demoBadge) demoBadge.style.display = 'block';
+    if (logoutBtn) logoutBtn.style.display = 'block';
+  } else {
+    if (demoBadge) demoBadge.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+  }
 }
 
 const sectionTitles = {
