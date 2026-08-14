@@ -136,5 +136,5 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// Export for Vercel serverless deployment
-module.exports = app;
+// Export for Vercel serverless deployment (ES modules)
+export default app;
