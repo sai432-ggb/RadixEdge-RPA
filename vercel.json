@@ -2,6 +2,7 @@
   "version": 2,
   "name": "radixedge-rpa",
   "buildCommand": "npm install",
+  "startCommand": "node server.js",
   "env": {
     "NODE_ENV": "production"
   }
