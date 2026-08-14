@@ -568,7 +568,7 @@ async function handleOTP() {
     // SEND OTP
     if (otpBtn.innerText === "Send OTP") {
 
-      const res = await fetch("http://localhost:5000/api/auth/send-otp", {
+      const res = await fetch("/api/auth/send-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -592,7 +592,7 @@ async function handleOTP() {
       // VERIFY OTP
       const otp = otpInput.value;
 
-      const res = await fetch("http://localhost:5000/api/auth/verify-otp", {
+      const res = await fetch("/api/auth/verify-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
