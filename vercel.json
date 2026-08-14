@@ -2,6 +2,7 @@
   "version": 2,
   "name": "radixedge-rpa",
   "startCommand": "node server.js",
+  "outputDirectory": "dist",
   "env": {
     "NODE_ENV": "production"
   }
