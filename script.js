@@ -476,7 +476,7 @@ class AgriAIChatbot {
     const container = document.getElementById('chatMessagesContainer');
     if (container) {
       container.innerHTML = '';
-      this.addMessage("👋 Namaste! I'm AgroSense AI with female voice. Ask me about crops, equipment, pest control, or trusted agri companies.", 'ai');
+      this.addMessage("👋 Namaste! I'm RadixEdge RPA AI with female voice. Ask me about crops, equipment, pest control, or trusted agri companies.", 'ai');
     }
   }
   startListening() {
@@ -533,7 +533,7 @@ class AgriAIChatbot {
     return `🐛 PEST CONTROL\n🌿 Natural: Neem oil (5ml/L), Garlic-chili spray, Soap solution.\n🐞 Common pests: Aphids → Neem; Whitefly → sticky traps; Caterpillars → Bt spray.\n⚠️ Chemical: Mancozeb for blight, follow label.`;
   }
   defaultResponse() {
-    return `👋 I'm AgroSense AI. Ask about:\n🌾 Best crops for all seasons\n🚜 Farming equipment\n🏢 Trusted agri companies\n🐛 Pest control\n🎤 Use voice or type!`;
+    return `👋 I'm RadixEdge RPA AI. Ask about:\n🌾 Best crops for all seasons\n🚜 Farming equipment\n🏢 Trusted agri companies\n🐛 Pest control\n🎤 Use voice or type!`;
   }
   addMessage(text, sender) {
     const container = document.getElementById('chatMessagesContainer');
