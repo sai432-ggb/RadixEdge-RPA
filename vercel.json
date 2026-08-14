@@ -1,24 +1,9 @@
 {
   "version": 2,
   "name": "radixedge-rpa",
-  "framework": null,
   "buildCommand": "npm install",
+  "startCommand": "node server.js",
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "api/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
+  }
 }
